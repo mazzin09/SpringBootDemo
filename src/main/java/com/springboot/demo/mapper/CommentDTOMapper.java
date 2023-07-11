@@ -16,6 +16,8 @@ public class CommentDTOMapper {
         CommentDTO commentDTODTO = new CommentDTO();
         commentDTODTO.setId(comment.getId());
         commentDTODTO.setContent(comment.getContent());
+        commentDTODTO.setBlog(comment.getBlog().getTitle());
+        commentDTODTO.setPerson(comment.getPerson().getName());
         return commentDTODTO;
     }
 }
