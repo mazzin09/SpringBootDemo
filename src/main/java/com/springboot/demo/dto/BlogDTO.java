@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Data
- public class PersonDTO{
+public class BlogDTO {
     private long id;
-    private String name;
+    private String title;
 }

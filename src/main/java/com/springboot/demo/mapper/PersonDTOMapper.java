@@ -1,21 +1,21 @@
-package com.springboot.demo.dto;
+package com.springboot.demo.mapper;
 
 
+import com.springboot.demo.dto.PersonDTO;
 import com.springboot.demo.model.Person;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Data
+@RequiredArgsConstructor
+
  public class PersonDTOMapper {
-    private final PersonDTO personDTO;
-
-    @Autowired
-    public PersonDTOMapper(PersonDTO personDTO) {
-        this.personDTO = personDTO;
-    }
-
     public static PersonDTO toDto(Person person) {
         PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(person.getId());
         personDTO.setName(person.getName());
         return personDTO;
     }

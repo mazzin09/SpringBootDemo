@@ -1,5 +1,7 @@
 package com.springboot.demo.api;
 
+import com.springboot.demo.dto.CommentDTO;
+import com.springboot.demo.mapper.CommentDTOMapper;
 import com.springboot.demo.model.Blog;
 import com.springboot.demo.model.Comment;
 import com.springboot.demo.model.Person;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/comments")
 @RestController
@@ -25,8 +28,9 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getAllComments(){
-        return commentService.getComments();
+    public List<CommentDTO> getAllComments(){
+        List<Comment> comments = commentService.getComments();
+        return comments.stream().map(CommentDTOMapper::toDto).collect(Collectors.toList());
     }
 
     @PostMapping
@@ -41,8 +45,9 @@ public class CommentController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Comment> getCommentById(@PathVariable("id") long id){
-        return commentService.getComment(id);
+    public List<CommentDTO> getCommentById(@PathVariable("id") long id){
+        Optional<Comment> comment = commentService.getComment(id);
+        return comment.stream().map(CommentDTOMapper::toDto).collect(Collectors.toList());
     }
 
     @DeleteMapping(path = "{id}")

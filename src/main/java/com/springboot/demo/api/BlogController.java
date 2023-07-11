@@ -1,5 +1,7 @@
 package com.springboot.demo.api;
 
+import com.springboot.demo.dto.BlogDTO;
+import com.springboot.demo.mapper.BlogDTOMapper;
 import com.springboot.demo.model.Blog;
 import com.springboot.demo.model.Person;
 import com.springboot.demo.repository.BlogRepository;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/blogs")
 @RestController
@@ -27,8 +30,12 @@ public class BlogController {
     }
 
     @GetMapping
-    public List<Blog> getAllBlog(){
-        return blogJpaService.getBlogs();
+    public List<BlogDTO> getAllBlog(){
+        List<Blog> blogs = blogJpaService.getBlogs();
+        return blogs
+                .stream()
+                .map(BlogDTOMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
@@ -40,8 +47,9 @@ public class BlogController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Blog> getBlogById(@PathVariable("id")  long id){
-        return blogJpaService.getBlog(id);
+    public List<BlogDTO> getBlogById(@PathVariable("id")  long id){
+        Optional<Blog> blog = blogJpaService.getBlog(id);
+        return blog.stream().map(BlogDTOMapper::toDto).collect(Collectors.toList());
     }
 
     @DeleteMapping(path = "{id}")

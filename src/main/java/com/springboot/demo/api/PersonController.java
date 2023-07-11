@@ -1,7 +1,7 @@
 package com.springboot.demo.api;
 
 import com.springboot.demo.dto.PersonDTO;
-import com.springboot.demo.dto.PersonDTOMapper;
+import com.springboot.demo.mapper.PersonDTOMapper;
 import com.springboot.demo.model.Person;
 import com.springboot.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,9 @@ public class PersonController {
     }
 
     @GetMapping(path = "{id}")
-    public Optional<Person> getPersonById(@PathVariable("id")  long id){
-       return personJpaService.getPerson(id);
+    public List<PersonDTO> getPersonById(@PathVariable("id")  long id){
+        Optional<Person> person = personJpaService.getPerson(id);
+        return person.stream().map(PersonDTOMapper::toDto).collect(Collectors.toList());
     }
 
     @DeleteMapping(path = "{id}")
